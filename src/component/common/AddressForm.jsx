@@ -10,12 +10,12 @@ const AddressForm = ({
   onCancel,
   isUpdating,
   showTitle,
-  showButtons,
   onSubmit,
   showCheck,
 }) => {
   const dispatch = useDispatch();
   const [countries, setCountries] = useState([]);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -116,24 +116,27 @@ const AddressForm = ({
         </Form.Control>
       </Form.Group>
       <div className="d-flex justify-content-end">
-        {showButtons && (
-          <div className="d-flex gap-4 mt-3">
-            {showCheck && (
-              <div
-                onClick={onSubmit}
-                style={{ cursor: "pointer", color: "green" }}
-              >
-                <FaCheck
-                  size={24}
-                  title={isUpdating ? "Update Address" : "Add Address"}
-                />
-              </div>
-            )}
-            <div onClick={onCancel} style={{ cursor: "pointer", color: "red" }}>
-              <FaTimes size={24} title="Cancel" />
-            </div>
-          </div>
-        )}
+        <div className="d-flex gap-4 mt-3">
+          {showCheck && (
+            <Button
+              variant="light"
+              onClick={onSubmit}
+              style={{ cursor: "pointer", color: "green" }}
+            >
+              <FaCheck
+                size={24}
+                title={isUpdating ? "Update Address" : "Add Address"}
+              />
+            </Button>
+          )}
+          <Button
+            variant="light"
+            onClick={onCancel}
+            style={{ cursor: "pointer", color: "red" }}
+          >
+            <FaTimes size={24} title="Cancel" />
+          </Button>
+        </div>
       </div>
     </div>
   );

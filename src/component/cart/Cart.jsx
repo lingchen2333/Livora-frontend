@@ -86,7 +86,7 @@ const Cart = () => {
   return (
     <div className="container mt-5 mb-5 p-5">
       <ToastContainer />
-      {items?.length === 0 ? (
+      {Array.isArray(items) && items.length === 0 ? (
         <h3 className="mb-4 cart-title">Your cart is empty</h3>
       ) : (
         <div className="d-flex flex-column">
@@ -103,47 +103,48 @@ const Cart = () => {
           <hr className="mb-2 mt-2" />
           <h3 className="mb-4 cart-title">My Shopping Cart</h3>
 
-          {items.map((item, index) => (
-            <Card key={index} className="mb-4">
-              <Card.Body className="d-flex justify-content-between align-items-center shadow">
-                <div className="col-2 text-center">
-                  <Link to={`/products/${item.product.id}`}>
-                    <div className="cart-image-container">
-                      {item.product.images.length > 0 && (
-                        <ProductImageThumbnail
-                          imageId={item.product.images[0].id}
-                        />
-                      )}
-                    </div>
-                  </Link>
-                </div>
+          {Array.isArray(items) &&
+            items.map((item, index) => (
+              <Card key={index} className="mb-4">
+                <Card.Body className="d-flex justify-content-between align-items-center shadow">
+                  <div className="col-2 text-center">
+                    <Link to={`/products/${item.product.id}`}>
+                      <div className="cart-image-container">
+                        {item.product.images.length > 0 && (
+                          <ProductImageThumbnail
+                            imageId={item.product.images[0].id}
+                          />
+                        )}
+                      </div>
+                    </Link>
+                  </div>
 
-                <div className="col-1 text-center">{item.product.name}</div>
-                <div className="col-2 text-center">{item.product.brand}</div>
-                <div className="col-2 text-center">
-                  £{item.product.price.toFixed(2)}
-                </div>
-                <div className="col-2 text-center">
-                  <QuantityUpdater
-                    quantity={item.quantity}
-                    onDecrease={() => handleQuantityDecrease(item)}
-                    onIncrease={() => handleQuantityIncrease(item)}
-                  />
-                </div>
-                <div className="col-2 text-center">
-                  £{item.totalPrice.toFixed(2)}
-                </div>
-                <div className="col-1 text-center">
-                  <Link
-                    to={"#"}
-                    onClick={() => handleRemoveItem(item.product.id)}
-                  >
-                    <span className="remove-item">Remove</span>
-                  </Link>
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
+                  <div className="col-1 text-center">{item.product.name}</div>
+                  <div className="col-2 text-center">{item.product.brand}</div>
+                  <div className="col-2 text-center">
+                    £{item.product.price.toFixed(2)}
+                  </div>
+                  <div className="col-2 text-center">
+                    <QuantityUpdater
+                      quantity={item.quantity}
+                      onDecrease={() => handleQuantityDecrease(item)}
+                      onIncrease={() => handleQuantityIncrease(item)}
+                    />
+                  </div>
+                  <div className="col-2 text-center">
+                    £{item.totalPrice.toFixed(2)}
+                  </div>
+                  <div className="col-1 text-center">
+                    <Link
+                      to={"#"}
+                      onClick={() => handleRemoveItem(item.product.id)}
+                    >
+                      <span className="remove-item">Remove</span>
+                    </Link>
+                  </div>
+                </Card.Body>
+              </Card>
+            ))}
           <hr />
 
           <div className="cart-footer d-flex align-items-center mt-4">

@@ -21,7 +21,7 @@ const Order = () => {
           <h3 className="mb-4 cart-title">My Order History</h3>
         </div>
       </div>
-      {orders.length === 0 ? (
+      {Array.isArray(orders) && orders.length === 0 ? (
         <p>No orders found at the moment.</p>
       ) : (
         <table className="table">
@@ -35,40 +35,42 @@ const Order = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order, index) => (
-              <tr key={index}>
-                <td>{order.id}</td>
-                <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                <td>${order.totalAmount.toFixed(2)}</td>
-                <td>{order.orderStatus}</td>
-                <td>
-                  <table className="table table-sm table-bordered table-striped table-hover">
-                    <thead>
-                      <tr>
-                        <th>Product ID</th>
-                        <th>Name</th>
-                        <th>Brand</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {order.items.map((item, index) => (
-                        <tr key={index}>
-                          <td>{item.itemProductId}</td>
-                          <td>{item.itemName}</td>
-                          <td>{item.itemBrand}</td>
-                          <td>{item.quantity}</td>
-                          <td>${item.unitPrice.toFixed(2)}</td>
-                          <td>${item.totalPrice.toFixed(2)}</td>
+            {Array.isArray(orders) &&
+              orders.map((order, index) => (
+                <tr key={index}>
+                  <td>{order.id}</td>
+                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                  <td>£{order.totalAmount.toFixed(2)}</td>
+                  <td>{order.orderStatus}</td>
+                  <td>
+                    <table className="table table-sm table-bordered table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th>Product ID</th>
+                          <th>Name</th>
+                          <th>Brand</th>
+                          <th>Quantity</th>
+                          <th>Unit Price</th>
+                          <th>Total Price</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            ))}
+                      </thead>
+                      <tbody>
+                        {Array.isArray(order.items) &&
+                          order.items.map((item, index) => (
+                            <tr key={index}>
+                              <td>{item.itemProductId}</td>
+                              <td>{item.itemName}</td>
+                              <td>{item.itemBrand}</td>
+                              <td>{item.quantity}</td>
+                              <td>£{item.unitPrice.toFixed(2)}</td>
+                              <td>£{item.totalPrice.toFixed(2)}</td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       )}
