@@ -105,7 +105,7 @@ const ProductDeatils = () => {
                   >
                     <FaShoppingCart /> Add to cart
                   </button>
-                  <button className="buy-now-button">Buy now</button>
+                  <button className="livora-button">Livora</button>
                 </div>
               </>
             ) : (

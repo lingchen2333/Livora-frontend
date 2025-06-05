@@ -10,7 +10,7 @@ const Hero = () => {
 
       <div className="hero-content">
         <h1>
-          Welcome to <span style={{ color: "#537D5D" }}>buyNow</span>.com
+          Welcome to <span style={{ color: "#537D5D" }}>Livora</span>.com
         </h1>
 
         <HeroSearchBar />

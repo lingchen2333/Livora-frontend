@@ -39,7 +39,7 @@ const Footer = () => {
 
         <div className="footer-section">
           <h3>Contact</h3>
-          <p>Email: info@buynow.com</p>
+          <p>Email: info@livora.com</p>
           <p>Pheon: (123) 456-7890</p>
         </div>
 
@@ -71,7 +71,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2025 buynow.com. All rights reserved.</p>
+          <p>&copy; 2025 livora.com. All rights reserved.</p>
         </div>
       </div>
     </footer>

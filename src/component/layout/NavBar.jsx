@@ -38,7 +38,7 @@ const NavBar = () => {
     <Navbar expand="lg" sticky="top" className="nav-bg">
       <Container>
         <Navbar.Brand to={"/"} as={Link} onClick={handleClearAllFilters}>
-          <span className="shop-home">buyNow.com</span>
+          <span className="shop-home">Livora.com</span>
         </Navbar.Brand>
 
         <Navbar.Toggle />
