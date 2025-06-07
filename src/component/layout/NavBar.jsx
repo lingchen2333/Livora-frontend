@@ -72,12 +72,6 @@ const NavBar = () => {
 
                   <NavDropdown.Divider />
 
-                  <NavDropdown.Item to={`/users/${userId}/orders`} as={Link}>
-                    My Orders
-                  </NavDropdown.Item>
-
-                  <NavDropdown.Divider />
-
                   <NavDropdown.Item to={"#"} onClick={handleLogout}>
                     Logout
                   </NavDropdown.Item>
@@ -94,12 +88,14 @@ const NavBar = () => {
                 to={`/users/${userId}/carts`}
                 className="nav-link me-1 position-relative"
               >
-                <FaShoppingCart className="shopping-cart-icon" />
-                {items.length > 0 ? (
-                  <div className="badge-overlay">{items.length}</div>
-                ) : (
-                  <div className="badge-overlay">0</div>
-                )}
+                <div className="position-relative d-inline-block">
+                  <FaShoppingCart className="shopping-cart-icon" />
+                  {items.length > 0 ? (
+                    <div className="badge-overlay">{items.length}</div>
+                  ) : (
+                    <div className="badge-overlay">0</div>
+                  )}
+                </div>
               </Link>
             )}
           </Nav>

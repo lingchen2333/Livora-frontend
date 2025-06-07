@@ -333,12 +333,12 @@
 
 .badge-overlay {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -5px;
+  right: -10px;
   color: #efecea;
   min-width: 50%;
   padding: 0 5px;
-  font-size: 16px;
+  font-size: 12px;
   border-radius: 50%;
   background-color: #e68619;
 }
@@ -459,6 +459,8 @@
 .shop-home {
   color: var(--search-button-color);
   font-weight: 900;
+  font-size: 1.875rem; /* 30px */
+  line-height: 2.25rem; /* 36px */
 }
 
 /* End navbar */

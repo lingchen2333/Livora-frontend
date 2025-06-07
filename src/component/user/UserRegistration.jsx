@@ -159,6 +159,9 @@ const UserRegistration = () => {
               address={address}
               onChange={(e) => handleAddressChange(index, e)}
               onCancel={() => handleRemoveAddress(index)}
+              showButtons={true}
+              showAddressType={true}
+              showPostCode={true}
             />
           </div>
         ))}

@@ -10,8 +10,11 @@ const AddressForm = ({
   onCancel,
   isUpdating,
   showTitle,
+  showButtons,
   onSubmit,
   showCheck,
+  showAddressType,
+  showPostCode,
 }) => {
   const dispatch = useDispatch();
   const [countries, setCountries] = useState([]);
@@ -72,23 +75,25 @@ const AddressForm = ({
         >
           <option value="">Select a country</option>
           {countries.map((country, index) => (
-            <option key={index} value={country}>
-              {country}
+            <option key={index} value={country.code}>
+              {country.name}
             </option>
           ))}
         </Form.Control>
       </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Post Code:</Form.Label>
-        <Form.Control
-          type="text"
-          name="postCode"
-          value={address.postCode}
-          onChange={onChange}
-          required
-        />
-      </Form.Group>
+      {showPostCode && (
+        <Form.Group className="mb-3">
+          <Form.Label>Post Code:</Form.Label>
+          <Form.Control
+            type="text"
+            name="postCode"
+            value={address.postCode}
+            onChange={onChange}
+            required
+          />
+        </Form.Group>
+      )}
 
       <Form.Group className="mb-3">
         <Form.Label>Phone: </Form.Label>
@@ -101,43 +106,48 @@ const AddressForm = ({
         />
       </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Address Type:</Form.Label>
-        <Form.Control
-          as="select"
-          name="addressType"
-          value={address.addressType}
-          onChange={onChange}
-          required
-        >
-          <option value="HOME">Home</option>
-          <option value="WORK">Work</option>
-          <option value="OTHER">Other</option>
-        </Form.Control>
-      </Form.Group>
-      <div className="d-flex justify-content-end">
-        <div className="d-flex gap-4 mt-3">
-          {showCheck && (
+      {showAddressType && (
+        <Form.Group className="mb-3">
+          <Form.Label>Address Type:</Form.Label>
+          <Form.Control
+            as="select"
+            name="addressType"
+            value={address.addressType}
+            onChange={onChange}
+            required
+          >
+            <option value="HOME">Home</option>
+            <option value="WORK">Work</option>
+            <option value="OTHER">Other</option>
+          </Form.Control>
+        </Form.Group>
+      )}
+
+      {showButtons && (
+        <div className="d-flex justify-content-end">
+          <div className="d-flex gap-4 mt-3">
+            {showCheck && (
+              <Button
+                variant="light"
+                onClick={onSubmit}
+                style={{ cursor: "pointer", color: "green" }}
+              >
+                <FaCheck
+                  size={24}
+                  title={isUpdating ? "Update Address" : "Add Address"}
+                />
+              </Button>
+            )}
             <Button
               variant="light"
-              onClick={onSubmit}
-              style={{ cursor: "pointer", color: "green" }}
+              onClick={onCancel}
+              style={{ cursor: "pointer", color: "red" }}
             >
-              <FaCheck
-                size={24}
-                title={isUpdating ? "Update Address" : "Add Address"}
-              />
+              <FaTimes size={24} title="Cancel" />
             </Button>
-          )}
-          <Button
-            variant="light"
-            onClick={onCancel}
-            style={{ cursor: "pointer", color: "red" }}
-          >
-            <FaTimes size={24} title="Cancel" />
-          </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -6,7 +6,6 @@ export const getUserById = createAsyncThunk(
   "user/getUserById",
   async (userId) => {
     const response = await api.get(`/users/${userId}`);
-    console.log("getUserById", response.data);
     return response.data;
   }
 );
@@ -31,11 +30,15 @@ export const getAllCountries = createAsyncThunk(
   "user/getAllCountries",
   async () => {
     const response = await axios.get(
-      `https://restcountries.com/v3.1/all?fields=name`
+      `https://restcountries.com/v3.1/all?fields=name,cca2`
     );
-    // console.log(response);
-    const countryNames = response.data.map((country) => country.name.common);
-    countryNames.sort((a, b) => a.localeCompare(b));
+
+    const countryNames = response.data.map((country) => ({
+      name: country.name.common,
+      code: country.cca2,
+    }));
+    countryNames.sort((a, b) => a.name.localeCompare(b));
+
     return countryNames;
   }
 );

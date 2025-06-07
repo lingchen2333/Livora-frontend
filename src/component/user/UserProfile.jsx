@@ -7,7 +7,7 @@ import {
   updateAddressById,
   addAddress,
 } from "../../store/features/userSlice";
-import { Col, Container, Row, Card, ListGroup, Table } from "react-bootstrap";
+import { Col, Container, Row, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,11 +15,14 @@ import AddressForm from "../common/AddressForm";
 import { nanoid } from "nanoid";
 import { getOrdersByUserId } from "../../store/features/orderSlice";
 import placeholder from "../../assets/images/placeholder.png";
+import LoadSpinner from "../common/LoadSpinner";
+import Order from "../order/Order";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const user = useSelector((state) => state.user.user);
+  const isLoading = useSelector((state) => state.order.isLoading);
 
   const [editingAddressId, setEditingAddressId] = useState(null);
   const [editingAddress, setEditingAddress] = useState({
@@ -155,6 +158,10 @@ const UserProfile = () => {
     }
   };
 
+  if (isLoading) {
+    return <LoadSpinner />;
+  }
+
   return (
     <Container className="mt-5 mb-5">
       <ToastContainer />
@@ -243,6 +250,9 @@ const UserProfile = () => {
                       : handleAddAddress
                   }
                   showCheck={true}
+                  showButtons={true}
+                  showAddressType={true}
+                  showPostCode={true}
                 />
               )}
             </Card>
@@ -260,59 +270,7 @@ const UserProfile = () => {
               {Array.isArray(orders) && orders.length === 0 ? (
                 <p>No orders found at the moment.</p>
               ) : (
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Order ID</th>
-                      <th>Date</th>
-                      <th>Total Amount</th>
-                      <th>Status</th>
-                      <th>Items</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.isArray(orders) &&
-                      orders.map((order, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{order.id}</td>
-                            <td>
-                              {new Date(order.orderDate).toLocaleDateString()}
-                            </td>
-                            <td>${order.totalAmount?.toFixed(2)}</td>
-                            <td>{order.orderStatus}</td>
-                            <td>
-                              <Table size="sm" striped bordered hover>
-                                <thead>
-                                  <tr>
-                                    <th>Item ID</th>
-                                    <th>Name</th>
-                                    <th>Brand</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                    <th>Total Price</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {Array.isArray(order.items) &&
-                                    order.items.map((item, itemIndex) => (
-                                      <tr key={itemIndex}>
-                                        <td>{item.itemProductId}</td>
-                                        <td>{item.itemName}</td>
-                                        <td>{item.itemBrand}</td>
-                                        <td>{item.quantity}</td>
-                                        <td>£{item.unitPrice.toFixed(2)}</td>
-                                        <td>£{item.totalPrice.toFixed(2)}</td>
-                                      </tr>
-                                    ))}
-                                </tbody>
-                              </Table>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </Table>
+                <Order />
               )}
               <div className="mb-2">
                 <Link to="/products">Start Shopping </Link>

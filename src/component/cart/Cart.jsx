@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   getCartByUserId,
   updateItemQuantity,
@@ -11,13 +11,13 @@ import { Card } from "react-bootstrap";
 import QuantityUpdater from "../utils/QuantityUpdater";
 import LoadSpinner from "../common/LoadSpinner";
 import { ToastContainer, toast } from "react-toastify";
-import { placeOrder } from "../../store/features/orderSlice";
-import { clearCart } from "../../store/features/cartSlice";
+
 import ProductImageThumbnail from "../utils/ProductImageThumbnail";
 
 const Cart = () => {
   const { userId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id, items, totalAmount, isLoading } = useSelector(
     (state) => state.cart
   );
@@ -62,16 +62,21 @@ const Cart = () => {
 
   const handlePlaceOrder = async () => {
     if (items.length > 0) {
-      try {
-        const result = await dispatch(placeOrder(userId)).unwrap();
-        dispatch(clearCart());
-        toast.success(result.message);
-      } catch (error) {
-        toast.error(error.message);
-      }
+      navigate(`/users/${userId}/checkout`);
     } else {
-      toast.error("Cart is empty");
+      toast.error("Please add items to your cart first");
     }
+    // if (items.length > 0) {
+    //   try {
+    //     const result = await dispatch(placeOrder(userId)).unwrap();
+    //     dispatch(clearCart());
+    //     toast.success(result.message);
+    //   } catch (error) {
+    //     toast.error(error.message);
+    //   }
+    // } else {
+    //   toast.error("Cart is empty");
+    // }
   };
 
   //spinner when is loading
