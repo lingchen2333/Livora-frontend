@@ -6,6 +6,7 @@ import CategorySelector from "../common/CategorySelector";
 import BrandSelector from "../common/BrandSelector";
 import { Stepper, Step, StepLabel } from "@mui/material";
 import ImageUploader from "../common/ImageUploader";
+import { FaArrowLeft, FaBox, FaImage } from "react-icons/fa";
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -22,25 +23,23 @@ const AddProduct = () => {
     name: "",
     brand: "",
     price: "",
-    inventory: " ",
+    inventory: "",
     description: "",
     categoryName: "",
   });
 
   const isValidFrom =
     product.categoryName &&
-    product.categoryName != "new" &&
+    product.categoryName !== "new" &&
     product.brand &&
-    product.brand != "new";
+    product.brand !== "new";
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
-    console.log(product);
   };
 
   const handleCategoryChange = (categoryName) => {
     setProduct((prev) => ({ ...prev, categoryName }));
-    console.log("product from handle category change:", product);
     if (categoryName === "new") {
       setShowNewCategoryInput(true);
     } else {
@@ -50,7 +49,6 @@ const AddProduct = () => {
 
   const handleBrandChange = (brand) => {
     setProduct((prev) => ({ ...prev, brand }));
-    console.log("product from handle brand change:", product);
     if (brand === "new") {
       setShowNewBrandInput(true);
     } else {
@@ -59,7 +57,6 @@ const AddProduct = () => {
   };
 
   const handleAddProduct = async (e) => {
-    console.log("product from handleAddProduct", product);
     e.preventDefault();
 
     if (!isValidFrom) {
@@ -69,7 +66,6 @@ const AddProduct = () => {
 
     try {
       const result = await dispatch(addNewProduct(product)).unwrap();
-      console.log("result from the add product", result);
       toast.success(result.message);
       setProductId(result.data.id);
       resetForm();
@@ -97,13 +93,38 @@ const AddProduct = () => {
   };
 
   return (
-    <section className="container mt-5 mb-5">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <ToastContainer />
-      <div className="d-flex justify-content-center">
-        <div className="col-md-6 col-xs-12">
-          <h4>Add New Product</h4>
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-sm p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Add New Product
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Fill in the product details and upload images
+            </p>
+          </div>
 
-          <Stepper activeStep={activeStep} className="mb-4">
+          <Stepper
+            activeStep={activeStep}
+            className="mb-8"
+            sx={{
+              "& .MuiStepLabel-label": {
+                fontSize: "0.875rem",
+                fontWeight: 500,
+              },
+              "& .MuiStepIcon-root": {
+                color: "#537D5D",
+                "&.Mui-active": {
+                  color: "#537D5D",
+                },
+                "&.Mui-completed": {
+                  color: "#537D5D",
+                },
+              },
+            }}
+          >
             {steps.map((label, index) => (
               <Step key={index}>
                 <StepLabel>{label}</StepLabel>
@@ -113,109 +134,144 @@ const AddProduct = () => {
 
           <div>
             {activeStep === 0 && (
-              <form onSubmit={handleAddProduct}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Name:
-                  </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="name"
-                    id="name"
-                    value={product.name}
-                    onChange={handleChange}
-                    required
-                  />
+              <form onSubmit={handleAddProduct} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Product Name
+                    </label>
+                    <input
+                      className="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={product.name}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter product name"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="price"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Price
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span className="text-gray-500">£</span>
+                      </div>
+                      <input
+                        className="block w-full pl-8 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+                        type="number"
+                        name="price"
+                        id="price"
+                        value={product.price}
+                        onChange={handleChange}
+                        required
+                        placeholder="0.00"
+                        step="0.01"
+                        min="0"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="inventory"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Inventory
+                    </label>
+                    <input
+                      className="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+                      type="number"
+                      name="inventory"
+                      id="inventory"
+                      value={product.inventory}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter quantity"
+                      min="0"
+                    />
+                  </div>
+
+                  <div>
+                    <BrandSelector
+                      selectedBrand={product.brand}
+                      onBrandChange={handleBrandChange}
+                      newBrand={newBrand}
+                      setNewBrand={setNewBrand}
+                      showNewBrandInput={showNewBrandInput}
+                      setShowNewBrandInput={setShowNewBrandInput}
+                    />
+                  </div>
+
+                  <div>
+                    <CategorySelector
+                      selectedCategory={product.categoryName}
+                      onCategoryChange={handleCategoryChange}
+                      newCategory={newCategory}
+                      setNewCategory={setNewCategory}
+                      showNewCategoryInput={showNewCategoryInput}
+                      setShowNewCategoryInput={setShowNewCategoryInput}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="price" className="form-label">
-                    Price:
-                  </label>
-                  <input
-                    className="form-control"
-                    type="number"
-                    name="price"
-                    id="price"
-                    value={product.price}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="inventory" className="form-label">
-                    Inventory:
-                  </label>
-                  <input
-                    className="form-control"
-                    type="number"
-                    name="inventory"
-                    id="inventory"
-                    value={product.inventory}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <BrandSelector
-                    selectedBrand={product.brand}
-                    onBrandChange={handleBrandChange}
-                    newBrand={newBrand}
-                    setNewBrand={setNewBrand}
-                    showNewBrandInput={showNewBrandInput}
-                    setShowNewBrandInput={setShowNewBrandInput}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <CategorySelector
-                    selectedCategory={product.categoryName}
-                    onCategoryChange={handleCategoryChange}
-                    newCategory={newCategory}
-                    setNewCategory={setNewCategory}
-                    showNewCategoryInput={showNewCategoryInput}
-                    setShowNewCategoryInput={setShowNewCategoryInput}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="description" className="form-label">
-                    Description:
+                <div>
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Description
                   </label>
                   <textarea
-                    className="form-control"
+                    className="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200 min-h-[120px]"
                     name="description"
                     id="description"
                     value={product.description}
                     onChange={handleChange}
                     required
+                    placeholder="Enter product description"
                   />
                 </div>
 
-                <button type="submit" className="btn btn-secondary btn-sm">
-                  Add Product
-                </button>
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#537D5D] hover:bg-[#4A6F52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#537D5D] transition-colors duration-200"
+                  >
+                    <FaBox className="mr-2" />
+                    Add Product
+                  </button>
+                </div>
               </form>
             )}
 
             {activeStep === 1 && (
-              <div className="container">
+              <div className="space-y-6">
                 <ImageUploader productId={productId} />
-                <button
-                  className="btn btn-secondary btn-s mt-3"
-                  onClick={handlePreviousStep}
-                >
-                  Previous
-                </button>
+                <div className="flex justify-start">
+                  <button
+                    onClick={handlePreviousStep}
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#537D5D] transition-colors duration-200"
+                  >
+                    <FaArrowLeft className="mr-2" />
+                    Previous
+                  </button>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

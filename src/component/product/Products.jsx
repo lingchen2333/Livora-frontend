@@ -88,12 +88,11 @@ const Products = () => {
         </div>
       </div>
 
-      <div className="d-flex">
-        <aside className="sidebar" style={{ width: "250px", padding: "1rem" }}>
+      <div className="flex">
+        <aside className="w-64 p-4">
           <SideBar />
         </aside>
-
-        <section style={{ flex: 1 }}>
+        <section className="flex-1">
           <ProductCard products={currentProducts} />
         </section>
       </div>

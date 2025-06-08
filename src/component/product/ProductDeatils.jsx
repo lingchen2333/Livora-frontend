@@ -58,63 +58,81 @@ const ProductDeatils = () => {
   };
 
   return (
-    <div className="container mt-4 mb-4">
+    <div className="container mx-auto px-4 py-8">
       <ToastContainer />
       {product ? (
-        <div className="row product-details">
-          <div className="col-md-4 product-images-gallery">
-            <div className="main-image-container">
-              {selectedImageId && <ImageZoomify imageId={selectedImageId} />}
+        <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <div className="aspect-square rounded-lg overflow-hidden bg-gray-50">
+                {selectedImageId && <ImageZoomify imageId={selectedImageId} />}
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {product.images.map((img) => (
+                  <div
+                    key={img.id}
+                    className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-200 ${
+                      selectedImageId === img.id
+                        ? "border-[#537D5D]"
+                        : "border-transparent hover:border-gray-300"
+                    }`}
+                    onClick={() => setSelectedImageId(img.id)}
+                  >
+                    <ProductImageThumbnail imageId={img.id} />
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="image-thumbnails">
-              {product.images.map((img) => (
-                <div
-                  key={img.id}
-                  className={`thumbnail ${
-                    selectedImageId === img.id ? "active" : ""
-                  }`}
-                  onClick={() => setSelectedImageId(img.id)}
-                >
-                  <ProductImageThumbnail imageId={img.id} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="col-md-8 details-container">
-            <h1 className="product-name">{product.name}</h1>
-            <h4 className="price">£{product.price}</h4>
-            <p className="product-description">{product.description}</p>
-            <p className="product-name">Brand: {product.brand}</p>
-            <p className="product-name">
-              Rating: <span className="rating">some stars</span>
-            </p>
-            <StockStatus inventory={product.inventory} />
 
-            {product.inventory > 0 ? (
-              <>
-                <p>Quantity:</p>
-                <QuantityUpdater
-                  quantity={quantity}
-                  onIncrease={handleIncreaseQuantity}
-                  onDecrease={handleDecreaseQuantity}
-                />
-                <div className="d-flex gap-2 mt-3">
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+                  {product.name}
+                </h1>
+                <p className="text-2xl font-medium text-[#537D5D] mb-4">
+                  £{product.price}
+                </p>
+                <p className="text-gray-600 mb-4">{product.description}</p>
+                <div className="space-y-2">
+                  <p className="text-gray-700">
+                    <span className="font-medium">Brand:</span> {product.brand}
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-medium">Category:</span>{" "}
+                    {product.category?.name}
+                  </p>
+                  <StockStatus inventory={product.inventory} />
+                </div>
+              </div>
+
+              {product.inventory > 0 ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Quantity:
+                    </label>
+                    <QuantityUpdater
+                      quantity={quantity}
+                      onIncrease={handleIncreaseQuantity}
+                      onDecrease={handleDecreaseQuantity}
+                    />
+                  </div>
                   <button
                     className="add-to-cart-button"
                     onClick={handleAddToCart}
                   >
-                    <FaShoppingCart /> Add to cart
+                    <FaShoppingCart className="text-lg" />
+                    Add to cart
                   </button>
-                  <button className="livora-button">Livora</button>
                 </div>
-              </>
-            ) : (
-              <></>
-            )}
+              ) : (
+                <p className="text-red-500 font-medium">Out of Stock</p>
+              )}
+            </div>
           </div>
         </div>
       ) : (
-        <p>No product</p>
+        <p className="text-center text-gray-500">No product found</p>
       )}
     </div>
   );

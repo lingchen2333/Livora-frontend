@@ -1,107 +1,45 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { uploadImages, updateImageById } from "../../store/features/imageSlice";
-import { toast } from "react-toastify";
+import React from "react";
+import { FaTimes } from "react-icons/fa";
+import ImageUploader from "../common/ImageUploader";
 
-const ImageUpdater = ({
-  show,
-  handleClose,
-  selectedImageId,
-  selectedImage,
-  productId,
-}) => {
-  const dispatch = useDispatch();
-  const fileInputRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-
-  useEffect(() => {
-    if (selectedImage) {
-      setImagePreview(selectedImage.imageUrl);
-    } else {
-      setImagePreview(null);
-    }
-  }, [selectedImage]);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
-    }
-  };
-
-  const handleImageAction = async () => {
-    if (!selectedFile) {
-      toast.warn("Please select an image.");
-      return;
-    }
-    try {
-      let result;
-      if (selectedImageId) {
-        result = await dispatch(
-          updateImageById({ imageId: selectedImageId, file: selectedFile })
-        ).unwrap();
-      } else {
-        result = await dispatch(
-          uploadImages({ productId, files: [selectedFile] })
-        ).unwrap();
-      }
-      toast.success(result.message);
-      handleClose();
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+const ImageUpdater = ({ show, handleClose, selectedImageId, productId }) => {
+  if (!show) return null;
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton style={{ backgroundColor: "whitesmoke" }}>
-        <Modal.Title>
-          {selectedImageId ? "Update Product Image" : "Add Product Image"}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div>
-          <p>
-            {selectedImageId
-              ? "Select a new image to replace the current one:"
-              : "Select the image to be added:"}
-          </p>
-          <input
-            type="file"
-            accept="image/*"
-            className="form-control"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-          />
-          <div className="image-preview-container">
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Image Preview"
-                className="img-fluid image-preview"
-              />
-            )}
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span
+          className="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+        >
+          &#8203;
+        </span>
+
+        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium text-gray-900">
+                {selectedImageId ? "Update Image" : "Add New Image"}
+              </h3>
+              <button
+                onClick={handleClose}
+                className="text-gray-400 hover:text-gray-500 focus:outline-none"
+              >
+                <FaTimes className="h-6 w-6" />
+              </button>
+            </div>
+            <ImageUploader
+              productId={productId}
+              selectedImageId={selectedImageId}
+            />
           </div>
         </div>
-      </Modal.Body>
-      <Modal.Footer style={{ backgroundColor: "whitesmoke" }}>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="secondary" onClick={handleImageAction}>
-          {selectedImageId ? "Save Changes" : "Upload Image"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      </div>
+    </div>
   );
 };
 

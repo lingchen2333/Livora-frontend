@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import HeroSlider from "./HeroSlider";
-import HeroSearchBar from "../search/HeroSearchBar";
 
 const Hero = () => {
   const [currentSlide] = useState(0);
@@ -9,18 +8,12 @@ const Hero = () => {
       <HeroSlider setCurrentSlide={currentSlide} />
 
       <div className="hero-content">
-        <h1>
+        <p className="tracking-wide text-4xl">
           Welcome to <span style={{ color: "#537D5D" }}>Livora</span>.com
-        </h1>
-
-        <HeroSearchBar />
-
-        <div className="home-button-container">
-          <a href="#" className="home-shop-button">
-            Shop Now
-          </a>
-          <button className="deals-button">Today's Deal</button>
-        </div>
+        </p>
+        <p className="text-xl font-medium tracking-wider text-white-100 my-4">
+          Crafted for Modern Living.
+        </p>
       </div>
     </div>
   );

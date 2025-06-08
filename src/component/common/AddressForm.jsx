@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Form, Button } from "react-bootstrap";
 import { getAllCountries } from "../../store/features/userSlice";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import {
+  FaCheck,
+  FaTimes,
+  FaHome,
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaGlobe,
+} from "react-icons/fa";
 
 const AddressForm = ({
   address,
@@ -29,123 +36,184 @@ const AddressForm = ({
   }, [dispatch]);
 
   return (
-    <div className="p-3 m-3 border">
-      {showTitle && <h5>{isUpdating ? "Edit Address" : "Add New Address"}</h5>}
-      <Form.Group className="mb-3">
-        <Form.Label>Address Line 1:</Form.Label>
-        <Form.Control
-          type="text"
-          name="addressLine1"
-          value={address.addressLine1}
-          onChange={onChange}
-          required
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Address Line 2:</Form.Label>
-        <Form.Control
-          type="text"
-          name="addressLine2"
-          value={address.addressLine2}
-          onChange={onChange}
-          required
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>City:</Form.Label>
-        <Form.Control
-          type="text"
-          name="city"
-          value={address.city}
-          onChange={onChange}
-          required
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Country:</Form.Label>
-        <Form.Control
-          as="select"
-          name="country"
-          value={address.country}
-          onChange={onChange}
-          required
-        >
-          <option value="">Select a country</option>
-          {countries.map((country, index) => (
-            <option key={index} value={country.code}>
-              {country.name}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-
-      {showPostCode && (
-        <Form.Group className="mb-3">
-          <Form.Label>Post Code:</Form.Label>
-          <Form.Control
-            type="text"
-            name="postCode"
-            value={address.postCode}
-            onChange={onChange}
-            required
-          />
-        </Form.Group>
+    <div className="space-y-6">
+      {showTitle && (
+        <h3 className="text-lg font-medium text-gray-900">
+          {isUpdating ? "Edit Address" : "Add New Address"}
+        </h3>
       )}
 
-      <Form.Group className="mb-3">
-        <Form.Label>Phone: </Form.Label>
-        <Form.Control
-          type="text"
-          name="phone"
-          value={address.phone}
-          onChange={onChange}
-          required
-        />
-      </Form.Group>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Address Line 1
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              name="addressLine1"
+              value={address.addressLine1}
+              onChange={onChange}
+              required
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+              placeholder="Street address"
+            />
+          </div>
+        </div>
 
-      {showAddressType && (
-        <Form.Group className="mb-3">
-          <Form.Label>Address Type:</Form.Label>
-          <Form.Control
-            as="select"
-            name="addressType"
-            value={address.addressType}
-            onChange={onChange}
-            required
-          >
-            <option value="HOME">Home</option>
-            <option value="WORK">Work</option>
-            <option value="OTHER">Other</option>
-          </Form.Control>
-        </Form.Group>
-      )}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Address Line 2
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              name="addressLine2"
+              value={address.addressLine2}
+              onChange={onChange}
+              required
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+              placeholder="Apartment, suite, etc."
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            City
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              name="city"
+              value={address.city}
+              onChange={onChange}
+              required
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+              placeholder="City"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Country
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaGlobe className="h-5 w-5 text-gray-400" />
+            </div>
+            <select
+              name="country"
+              value={address.country}
+              onChange={onChange}
+              required
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200 appearance-none bg-white"
+            >
+              <option value="">Select a country</option>
+              {countries.map((country, index) => (
+                <option key={index} value={country.code}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {showPostCode && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Post Code
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                name="postCode"
+                value={address.postCode}
+                onChange={onChange}
+                required
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+                placeholder="Postal code"
+              />
+            </div>
+          </div>
+        )}
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Phone
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaPhone className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="tel"
+              name="phone"
+              value={address.phone}
+              onChange={onChange}
+              required
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+              placeholder="Phone number"
+            />
+          </div>
+        </div>
+
+        {showAddressType && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Address Type
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaHome className="h-5 w-5 text-gray-400" />
+              </div>
+              <select
+                name="addressType"
+                value={address.addressType}
+                onChange={onChange}
+                required
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200 appearance-none bg-white"
+              >
+                <option value="HOME">Home</option>
+                <option value="WORK">Work</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+          </div>
+        )}
+      </div>
 
       {showButtons && (
-        <div className="d-flex justify-content-end">
-          <div className="d-flex gap-4 mt-3">
-            {showCheck && (
-              <Button
-                variant="light"
-                onClick={onSubmit}
-                style={{ cursor: "pointer", color: "green" }}
-              >
-                <FaCheck
-                  size={24}
-                  title={isUpdating ? "Update Address" : "Add Address"}
-                />
-              </Button>
-            )}
-            <Button
-              variant="light"
-              onClick={onCancel}
-              style={{ cursor: "pointer", color: "red" }}
+        <div className="flex justify-end space-x-4 mt-6">
+          {showCheck && (
+            <button
+              onClick={onSubmit}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-[#537D5D] hover:bg-[#4A6F52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#537D5D] transition-colors duration-200"
             >
-              <FaTimes size={24} title="Cancel" />
-            </Button>
-          </div>
+              <FaCheck className="mr-2" />
+              {isUpdating ? "Update Address" : "Add Address"}
+            </button>
+          )}
+          <button
+            onClick={onCancel}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-full shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#537D5D] transition-colors duration-200"
+          >
+            <FaTimes className="mr-2" />
+            Cancel
+          </button>
         </div>
       )}
     </div>

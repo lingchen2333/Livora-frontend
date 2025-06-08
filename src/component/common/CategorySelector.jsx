@@ -4,6 +4,7 @@ import {
   getAllCategories,
   addCategory,
 } from "../../store/features/categorySlice";
+import { FaPlus, FaList } from "react-icons/fa";
 
 const CategorySelector = ({
   selectedCategory,
@@ -40,38 +41,62 @@ const CategorySelector = ({
   };
 
   return (
-    <div className="mb-3">
-      <label className="form-label">Category: </label>
-      <select
-        value={selectedCategory}
-        className="form-select"
-        required
-        onChange={handleCategoryChange}
-      >
-        <option>All Categories:</option>
-        <option value="new">Add New Category</option>
-        {categories.map((category, index) => (
-          <option key={index} value={category}>
-            {category}
-          </option>
-        ))}
-      </select>
-      {showNewCategoryInput && (
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            value={newCategory}
-            placeholder="Enter new category"
-            onChange={(e) => setNewCategory(e.target.value)}
-          />
-          <button
-            className="btn btn-secondary btn-sm"
-            type="button"
-            onClick={handleAddNewCategory}
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Category
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FaList className="h-5 w-5 text-gray-400" />
+          </div>
+          <select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            required
+            className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200 appearance-none bg-white"
           >
-            Add Category
-          </button>
+            <option value="">Select a category</option>
+            <option value="new" className="text-[#537D5D] font-medium">
+              + Add New Category
+            </option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {showNewCategoryInput && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            New Category Name
+          </label>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaPlus className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                value={newCategory}
+                placeholder="Enter new category name"
+                onChange={(e) => setNewCategory(e.target.value)}
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleAddNewCategory}
+              disabled={!newCategory.trim()}
+              className="inline-flex items-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#537D5D] hover:bg-[#4A6F52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#537D5D] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FaPlus className="mr-2" />
+              Add Category
+            </button>
+          </div>
         </div>
       )}
     </div>

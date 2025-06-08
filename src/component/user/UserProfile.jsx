@@ -7,9 +7,9 @@ import {
   updateAddressById,
   addAddress,
 } from "../../store/features/userSlice";
-import { Col, Container, Row, Card, ListGroup } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+
 import { toast, ToastContainer } from "react-toastify";
 import AddressForm from "../common/AddressForm";
 import { nanoid } from "nanoid";
@@ -163,123 +163,168 @@ const UserProfile = () => {
   }
 
   return (
-    <Container className="mt-5 mb-5">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <ToastContainer />
-      <h2 className="cart-title">User Dashboard</h2>
-      {user ? (
-        <Row>
-          <Col md={4}>
-            <Card className="mt-4">
-              <Card.Title className="p-2">User Information</Card.Title>
-              <Card.Body className="text-center">
-                <div className="mb-3">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          User Dashboard
+        </h2>
+
+        {user ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* User Information Card */}
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                User Information
+              </h3>
+              <div className="text-center">
+                <div className="mb-4">
                   <img
                     src={user.photo || placeholder}
                     alt="User Photo"
-                    style={{ width: "100px", height: "100px" }}
-                    className="image-fluid rounded-circle"
+                    className="w-24 h-24 rounded-full object-cover mx-auto border-2 border-[#537D5D]"
                   />
                 </div>
-                <Card.Text>
-                  <strong>Full Name: </strong> {user.firstName} {user.lastName}
-                </Card.Text>
-                <Card.Text>
-                  <strong>Email: </strong> {user.email}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={8}>
-            <Card className="mt-4 mb-4">
-              <Card.Header>User Addresses</Card.Header>
-              <ListGroup variant="flush">
-                {user.addressList?.length > 0 ? (
-                  user.addressList.map((address) => (
-                    <ListGroup.Item key={address.id}>
-                      <Card className="p-2 mb-2 shadow">
-                        <Card.Body>
-                          <Card.Text>{address.addressType} Address: </Card.Text>
-                          <hr />
-                          <Card.Text>
-                            {address.addressLine1}, {address.addressLine2},{" "}
-                            {address.city}, {address.country}
-                          </Card.Text>
-                        </Card.Body>
-                        <div className="d-flex gap-4">
-                          <Link
-                            className="text-danger"
-                            onClick={() => handleDeleteAddress(address.id)}
-                          >
-                            <FaTrash />
-                          </Link>
-                          <Link>
-                            <FaEdit
-                              onClick={() => handleEditAddress(address)}
-                            />
-                          </Link>
-                        </div>
-                      </Card>
-                    </ListGroup.Item>
-                  ))
-                ) : (
-                  <p className="ps-2 pt-2"> No addresses found</p>
-                )}
-              </ListGroup>
-              <Link
-                className="ms-2 mb-2"
-                variant="success"
-                onClick={() => {
-                  setIsUpdating(false);
-                  setShowForm(true);
-                }}
-              >
-                <FaPlus />
-              </Link>
-
-              {showForm && (
-                <AddressForm
-                  address={editingAddress}
-                  onChange={handleAddressChange}
-                  onCancel={resetForm}
-                  isUpdating={isUpdating}
-                  showTitle={true}
-                  onSubmit={
-                    isUpdating
-                      ? () => handleUpdateAddress(editingAddressId)
-                      : handleAddAddress
-                  }
-                  showCheck={true}
-                  showButtons={true}
-                  showAddressType={true}
-                  showPostCode={true}
-                />
-              )}
-            </Card>
-          </Col>
-        </Row>
-      ) : (
-        <p>Loading user information....</p>
-      )}
-
-      <Row>
-        <Col>
-          <Card className="mt-4">
-            <Card.Header>Order History</Card.Header>
-            <Container className="mt-4">
-              {Array.isArray(orders) && orders.length === 0 ? (
-                <p>No orders found at the moment.</p>
-              ) : (
-                <Order />
-              )}
-              <div className="mb-2">
-                <Link to="/products">Start Shopping </Link>
+                <div className="space-y-2">
+                  <p className="text-gray-700">
+                    <span className="font-medium">Full Name:</span>{" "}
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-medium">Email:</span> {user.email}
+                  </p>
+                </div>
               </div>
-            </Container>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+            </div>
+
+            {/* Addresses Card */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Addresses
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setShowForm(true);
+                      setIsUpdating(false);
+                    }}
+                    className="px-4 py-2 bg-[#537D5D] text-white rounded-full hover:bg-[#4A6F52] transition-colors duration-200 text-sm"
+                  >
+                    Add New Address
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {user.addressList?.length > 0 ? (
+                    user.addressList.map((address, index) => (
+                      <div
+                        key={index}
+                        className="border border-gray-200 rounded-lg p-4 hover:border-[#537D5D] transition-colors duration-200"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-1">
+                            <p className="text-gray-900 font-medium">
+                              {address.addressType} Address
+                            </p>
+                            <p className="text-gray-600">
+                              {address.addressLine1}
+                            </p>
+                            {address.addressLine2 && (
+                              <p className="text-gray-600">
+                                {address.addressLine2}
+                              </p>
+                            )}
+                            <p className="text-gray-600">
+                              {address.city}, {address.country}
+                            </p>
+                            <p className="text-gray-600">
+                              Postal Code: {address.postCode}
+                            </p>
+                            <p className="text-gray-600">
+                              Phone: {address.phone}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleEditAddress(address)}
+                              className="text-[#537D5D] hover:text-[#4A6F52] transition-colors duration-200"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeleteAddress(address.id)}
+                              className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">
+                      No addresses found
+                    </p>
+                  )}
+                </div>
+
+                {showForm && (
+                  <div className="mt-6 border-t border-gray-200 pt-6">
+                    <AddressForm
+                      address={editingAddress}
+                      onChange={handleAddressChange}
+                      onCancel={resetForm}
+                      isUpdating={isUpdating}
+                      showTitle={true}
+                      onSubmit={
+                        isUpdating
+                          ? () => handleUpdateAddress(editingAddressId)
+                          : handleAddAddress
+                      }
+                      showCheck={true}
+                      showButtons={true}
+                      showAddressType={true}
+                      showPostCode={true}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Order History Card */}
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Order History
+                </h3>
+                <div className="overflow-x-auto">
+                  {Array.isArray(orders) && orders.length === 0 ? (
+                    <p className="text-gray-500 text-center py-4">
+                      No orders found at the moment.
+                    </p>
+                  ) : (
+                    <Order />
+                  )}
+                </div>
+                <div className="mt-4 text-center">
+                  <Link
+                    to="/products"
+                    className="inline-block px-6 py-2 bg-[#537D5D] text-white rounded-full hover:bg-[#4A6F52] transition-colors duration-200"
+                  >
+                    Start Shopping
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500">Loading user information...</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children, allowedRoles = [], useOutlet = false }) => {
   if (isAuthorised) {
     return useOutlet ? <Outlet /> : children;
   } else {
-    return <Navigate to="/unauthorised" state={{ from: location }} replace />;
+    return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
 };
 

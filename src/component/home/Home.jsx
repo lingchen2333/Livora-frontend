@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Hero from "../hero/Hero";
-import Paginator from "../common/Paginator";
-import { Card } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
 import ProductImage from "../utils/ProductImage";
 import { getFirstProductPerDistinctName } from "../../store/features/productSlice";
@@ -13,7 +12,13 @@ import {
   setCurrentPage,
 } from "../../store/features/paginationSlice";
 import LoadSpinner from "../common/LoadSpinner";
-import { setInitialSearchQuery } from "../../store/features/searchSlice";
+import {
+  setInitialSearchQuery,
+  clearFilters,
+} from "../../store/features/searchSlice";
+
+import CategorySelector from "../search/CategorySearchBar";
+import CategorySearchBar from "../search/CategorySearchBar";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -78,46 +83,63 @@ const Home = () => {
   }
 
   return (
-    <>
+    <div className="mb-50">
       <Hero />
-      <div className="d-flex flex-wrap justify-content-center p-5">
-        <ToastContainer />
-        {currentProducts &&
-          currentProducts.map((product) => (
-            <Card key={product.id} className="home-product-card">
-              <Link
-                to={`/products/search?name=${product.name}`}
-                className="link"
-                onClick={() => dispatch(setInitialSearchQuery(product.name))}
-              >
-                {product.images && product.images.length > 0 && (
-                  <ProductImage
-                    imageId={product.images[0].id}
-                    nextImageId={product.images[1]?.id}
-                  />
-                )}
-              </Link>
+      <ToastContainer />
+      <div className="mt-5">
+        <CategorySearchBar />
 
-              <Card.Body>
-                <p className="product-name">{product.name}</p>
-                <p className="product-description">{product.description}</p>
+        <div className="container mx-auto mt-10 px-5 xl:px-28 ">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+            {currentProducts &&
+              currentProducts.map((product) => (
+                <article key={product.id} className="group relative w-full">
+                  <Link
+                    to={`/products/search?name=${product.name}`}
+                    className="block w-full"
+                    onClick={() =>
+                      dispatch(setInitialSearchQuery(product.name))
+                    }
+                  >
+                    {product.images && product.images.length > 0 && (
+                      <ProductImage
+                        imageId={product.images[0].id}
+                        nextImageId={product.images[1]?.id}
+                        className="h-48 w-full object-contain p-4 md:p-5 lg:h-56 xl:h-96 xl:p-8"
+                      />
+                    )}
+                  </Link>
 
-                <h4 className="price">£{product.price}</h4>
-                <StockStatus inventory={product.inventory} />
+                  <Link
+                    to={`/products/search?name=${product.name}`}
+                    className="block mt-2 text-black font-medium capitalize hover:text-[#537D5D] text-xl tracking-wider"
+                    onClick={() =>
+                      dispatch(setInitialSearchQuery(product.name))
+                    }
+                  >
+                    {product.name}
+                  </Link>
 
-                <Link
-                  to={`/products/search?name=${product.name}`}
-                  className="shop-now-button"
-                  onClick={() => dispatch(setInitialSearchQuery(product.name))}
-                >
-                  Shop now
-                </Link>
-              </Card.Body>
-            </Card>
-          ))}
+                  <h6 className="price mt-1">£{product.price}</h6>
+                </article>
+              ))}
+          </div>
+
+          <div className="flex w-full items-center justify-center gap-4 mt-30">
+            <div className="w-2/3 border-b border-gray-300 xl:w-2/5"></div>
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to="/products"
+              className="w-full border-1 border-[#537D5D] py-3 text-center text-sm font-medium uppercase tracking-wider md:w-1/2 xl:w-1/6 xl:text-base transition-colors duration-300 hover:bg-[#537D5D] hover:text-white"
+              onClick={() => dispatch(clearFilters())}
+            >
+              Go to shop
+            </Link>
+            <div className="w-2/3 border-b border-gray-300 xl:w-2/5"></div>
+          </div>
+        </div>
       </div>
-      <Paginator />
-    </>
+    </div>
   );
 };
 

@@ -43,16 +43,22 @@ const SearchBar = () => {
   }, [dispatch]);
 
   return (
-    <div className="search-bar input-group input-group-sm">
+    <div className="flex w-full max-w-3xl mx-auto gap-2 p-4">
       <select
-        className="form-control-sm"
+        className="w-48 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#537D5D] focus:ring-1 focus:ring-[#537D5D] bg-white"
         value={selectedCategory}
         onChange={handleCategoryChange}
       >
-        <option value="all">All Category</option>
+        <option value="all">All Categories</option>
         {categories.map((category, index) => (
           <option key={index} value={category}>
-            {category}
+            {category
+              .split(" ")
+              .map(
+                (word) =>
+                  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              )
+              .join(" ")}
           </option>
         ))}
       </select>
@@ -60,11 +66,14 @@ const SearchBar = () => {
         type="text"
         value={searchQuery}
         onChange={handleSearchQueryChange}
-        className="form-control"
-        placeholder="search..."
+        className="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#537D5D] focus:ring-1 focus:ring-[#537D5D]"
+        placeholder="Search products..."
       />
-      <button className="search-button" onClick={handleClearFilters}>
-        Clear Filter
+      <button
+        className="px-6 py-2 text-sm font-medium text-white bg-[#537D5D] rounded-lg hover:bg-[#537D5D]/90 transition-colors duration-300"
+        onClick={handleClearFilters}
+      >
+        Clear
       </button>
     </div>
   );

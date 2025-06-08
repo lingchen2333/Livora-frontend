@@ -1,5 +1,6 @@
-/* Hero.css */
-.hero {
+@import "tailwindcss";
+
+Hero.css .hero {
   background-size: cover;
   background-position: center;
   height: 300px;
@@ -18,14 +19,14 @@
   background-color: var(--dark-background);
   padding: 20px;
   border-radius: 10px;
-  max-width: 800px;
+  max-width: 700px;
   width: 100%;
   position: absolute;
-  top: 60%;
-  left: 50%;
+  top: 40%;
+  left: 35%;
   transform: translate(-50%, -50%);
   color: white;
-  text-align: center;
+  text-align: left;
 }
 
 .search-bar {
@@ -316,7 +317,7 @@
 
 .add-to-cart-button {
   padding: 10px 20px;
-  background-color: var(--search-button-color);
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 20px;
@@ -324,7 +325,7 @@
 }
 
 .add-to-cart-button:hover {
-  background-color: var(--dark-background);
+  background-color: var(--search-button-color);
 }
 
 .shopping-cart-icon {
@@ -502,14 +503,14 @@
 .checkmark {
   width: 20px;
   height: 20px;
-  background-color: #be9898;
+  background-color: var(--search-button-color);
   border-radius: 3px;
   margin-right: 10px;
   position: relative;
 }
 
 .checkbox-container input:checked + .checkmark {
-  background-color: var(--search-button-color);
+  background-color: var(--primary-color);
 }
 
 .checkmark::after {
@@ -567,6 +568,7 @@
   --search-button-color: #dac292;
   --dark-background: #000000b3;
   --nav-background: #f1f0f0;
+  --primary-color: #537d5d;
 
   /* Default color */
 }

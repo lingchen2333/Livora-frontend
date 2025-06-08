@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { clearFilters } from "../../store/features/searchSlice";
 import { setSelectedBrands } from "../../store/features/productSlice";
-import { FaShoppingCart } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaUser,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaStore,
+} from "react-icons/fa";
 import { logout } from "../service/authService";
 import { getCartByUserId } from "../../store/features/cartSlice";
 
@@ -17,6 +22,7 @@ const NavBar = () => {
   const items = useSelector((state) => state.cart.items);
   const userRoles = useSelector((state) => state.auth.roles);
   const userId = localStorage.getItem("userId");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleClearAllFilters = () => {
     searchParams.delete("category");
@@ -28,6 +34,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     logout();
+    setIsDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -35,73 +42,94 @@ const NavBar = () => {
   }, [userId, dispatch]);
 
   return (
-    <Navbar expand="lg" sticky="top" className="nav-bg">
-      <Container>
-        <Navbar.Brand to={"/"} as={Link} onClick={handleClearAllFilters}>
-          <span className="shop-home">Livora.com</span>
-        </Navbar.Brand>
-
-        <Navbar.Toggle />
-
-        <Navbar.Collapse>
-          <Nav className="me-auto">
-            <Nav.Link
-              to={"/products"}
-              as={Link}
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <Link
+              to="/"
               onClick={handleClearAllFilters}
+              className="text-3xl font-bold !text-[#dac292] hover:!text-[#e6d3ae] transition-colors duration-200"
             >
-              All Products
-            </Nav.Link>
-          </Nav>
+              Livora.com
+            </Link>
+          </div>
 
-          {userRoles.includes("ROLE_ADMIN") && (
-            <Nav className="me-auto">
-              <Nav.Link to={"/products/add"} as={Link}>
+          <div className="flex items-center space-x-4">
+            <Link
+              to="/products"
+              onClick={handleClearAllFilters}
+              className="!text-gray-700 hover:!text-[#537D5D] px-3 py-2 rounded-md text-m font-medium transition-colors duration-200"
+            >
+              Shop
+            </Link>
+
+            {userRoles.includes("ROLE_ADMIN") && (
+              <Link
+                to="/products/add"
+                className="!text-gray-700 hover:!text-[#537D5D] px-3 py-2 rounded-md text-m font-medium transition-colors duration-200"
+              >
+                <FaStore className="inline-block mr-1 mb-1" />
                 Manage Shop
-              </Nav.Link>
-            </Nav>
-          )}
+              </Link>
+            )}
 
-          <Nav className="ms-auto">
-            <NavDropdown title="Account">
-              {userId ? (
-                <>
-                  <NavDropdown.Item to={`/users/${userId}`} as={Link}>
-                    My Account
-                  </NavDropdown.Item>
-
-                  <NavDropdown.Divider />
-
-                  <NavDropdown.Item to={"#"} onClick={handleLogout}>
-                    Logout
-                  </NavDropdown.Item>
-                </>
-              ) : (
-                <NavDropdown.Item to={"/login"} as={Link}>
-                  Login
-                </NavDropdown.Item>
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center text-gray-700 hover:text-[#537D5D] px-3 py-2 rounded-md text-m font-medium transition-colors duration-200"
+              >
+                <FaUser className="mr-1 mb-1" />
+                Account
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 w-48 mt-2 py-2 bg-white rounded-md shadow-lg">
+                  {userId ? (
+                    <>
+                      <Link
+                        to={`/users/${userId}`}
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block px-4 py-2 text-m !text-gray-700 hover:!bg-gray-100 hover:!text-[#537D5D] transition-colors duration-200"
+                      >
+                        My Account
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-m !text-gray-700 hover:!bg-gray-100 hover:!text-[#537D5D] transition-colors duration-200"
+                      >
+                        <FaSignOutAlt className="inline-block mr-1" />
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm !text-gray-700 hover:!bg-gray-100 hover:!text-[#537D5D] transition-colors duration-200"
+                    >
+                      <FaSignInAlt className="inline-block mr-1" />
+                      Login
+                    </Link>
+                  )}
+                </div>
               )}
-            </NavDropdown>
+            </div>
 
             {userId && (
               <Link
                 to={`/users/${userId}/carts`}
-                className="nav-link me-1 position-relative"
+                className="relative !text-gray-700 hover:!text-[#537D5D] p-2 rounded-md transition-colors duration-200"
               >
-                <div className="position-relative d-inline-block">
-                  <FaShoppingCart className="shopping-cart-icon" />
-                  {items.length > 0 ? (
-                    <div className="badge-overlay">{items.length}</div>
-                  ) : (
-                    <div className="badge-overlay">0</div>
-                  )}
-                </div>
+                <FaShoppingCart className="text-xl" />
+                <span className="absolute -top-1 -right-1 bg-[#537D5D] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {items.length}
+                </span>
               </Link>
             )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 

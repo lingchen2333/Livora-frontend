@@ -4,6 +4,7 @@ import {
   getDistinctProductBrands,
   addBrand,
 } from "../../store/features/productSlice";
+import { FaPlus, FaTag } from "react-icons/fa";
 
 const BrandSelector = ({
   selectedBrand,
@@ -41,38 +42,62 @@ const BrandSelector = ({
   };
 
   return (
-    <div className="mb-3">
-      <label className="form-label">Brand: </label>
-      <select
-        value={selectedBrand}
-        className="form-select"
-        required
-        onChange={handleBrandChange}
-      >
-        <option>All Brands:</option>
-        <option value="new">Add New Brand</option>
-        {brands.map((brand, index) => (
-          <option key={index} value={brand}>
-            {brand}
-          </option>
-        ))}
-      </select>
-      {showNewBrandInput && (
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control"
-            value={newBrand}
-            placeholder="Enter new brand"
-            onChange={(e) => setNewBrand(e.target.value)}
-          />
-          <button
-            className="btn btn-secondary btn-sm"
-            type="button"
-            onClick={handleAddNewBrand}
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Brand
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FaTag className="h-5 w-5 text-gray-400" />
+          </div>
+          <select
+            value={selectedBrand}
+            onChange={handleBrandChange}
+            required
+            className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200 appearance-none bg-white"
           >
-            Add Brand
-          </button>
+            <option value="">Select a brand</option>
+            <option value="new" className="text-[#537D5D] font-medium">
+              + Add New Brand
+            </option>
+            {brands.map((brand, index) => (
+              <option key={index} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {showNewBrandInput && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            New Brand Name
+          </label>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaPlus className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                value={newBrand}
+                placeholder="Enter new brand name"
+                onChange={(e) => setNewBrand(e.target.value)}
+                className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-[#537D5D] focus:border-[#537D5D] transition-colors duration-200"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleAddNewBrand}
+              disabled={!newBrand.trim()}
+              className="inline-flex items-center px-4 py-2.5 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#537D5D] hover:bg-[#4A6F52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#537D5D] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FaPlus className="mr-2" />
+              Add Brand
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -5,7 +5,6 @@ export const getAllProducts = createAsyncThunk(
   "product/getAllProducts",
   async () => {
     const response = await api.get("/products");
-    console.log(response);
     return response.data.data;
   }
 );
@@ -22,7 +21,6 @@ export const getFirstProductPerDistinctName = createAsyncThunk(
   "product/getFirstProductPerDistinctName",
   async () => {
     const response = await api.get("/products/distinct");
-    console.log(response);
     return response.data.data;
   }
 );
@@ -38,9 +36,7 @@ export const getProductById = createAsyncThunk(
 export const addNewProduct = createAsyncThunk(
   "product/addNewProduct",
   async (product) => {
-    console.log("request from addProduct: ", product);
     const response = await authApi.post(`/products`, product);
-    console.log("response.data from the slice", response.data);
     return response.data;
   }
 );

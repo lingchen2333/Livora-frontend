@@ -15,7 +15,7 @@ import ProductUpdate from "./component/product/ProductUpdate";
 import UserRegistration from "./component/user/UserRegistration";
 import Login from "./component/auth/Login";
 import ProtectedRoute from "./component/auth/ProtectedRoute";
-import UnAuthorised from "./component/UnAuthorised";
+import UnAuthorized from "./component/UnAuthorized";
 import UserProfile from "./component/user/UserProfile";
 import Checkout from "./component/checkout/checkout";
 
@@ -29,9 +29,10 @@ function App() {
         <Route path="/products/:productId" element={<ProductDeatils />} />
         <Route path="/register" element={<UserRegistration />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/unauthorised" element={<UnAuthorised />} />
+        <Route path="/unauthorized" element={<UnAuthorized />} />
         <Route path="/users/:userId/checkout" element={<Checkout />} />
-        //user and admin:
+
+        {/* user and admin: */}
         <Route
           element={
             <ProtectedRoute
@@ -44,7 +45,8 @@ function App() {
 
           <Route path="/users/:userId" element={<UserProfile />} />
         </Route>
-        //admin:
+
+        {/* admin: */}
         <Route
           element={
             <ProtectedRoute useOutlet={true} allowedRoles={["ROLE_ADMIN"]} />

@@ -59,6 +59,8 @@ const ProductImage = ({ imageId, nextImageId }) => {
       <img
         src={isHovered && nextImg ? nextImg : productImg}
         alt="Product Image"
+        width={300}
+        height={300}
       />
     </div>
   );

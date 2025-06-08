@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
 import ProductImage from "../utils/ProductImage";
 import StockStatus from "../utils/StockStatus";
@@ -41,47 +41,67 @@ const ProductCard = ({ products }) => {
   };
 
   return (
-    <main className="row m-2">
+    <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
       {products.map((product) => (
-        <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={product.id}>
-          <Card className="mb-2 mt-2 h-100">
-            <Link to={`/products/${product.id}`} className="link">
-              {product.images.length > 0 && (
+        <article
+          key={product.id}
+          className="group relative bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+        >
+          <Link to={`/products/${product.id}`} className="block w-full">
+            {product.images.length > 0 && (
+              <div className="relative overflow-hidden rounded-t-lg">
                 <ProductImage
                   imageId={product.images[0].id}
                   nextImageId={product.images[1]?.id}
+                  className="h-48 w-full object-contain p-4 md:p-5 lg:h-56 xl:h-64 xl:p-8 transition-transform duration-300 group-hover:scale-105"
                 />
-              )}
+              </div>
+            )}
+          </Link>
+
+          <div className="p-4">
+            <Link
+              to={`/products/${product.id}`}
+              className="block text-gray-800 font-semibold text-lg capitalize hover:text-primary transition-colors duration-200"
+            >
+              {product.name}
             </Link>
 
-            <Card.Body className="d-flex flex-column">
-              <p className="product-name flex-grow-1">{product.name}</p>
-              <p className="product-description">{product.description}</p>
+            <div className="mt-3 space-y-2">
+              <h5 className="text-xl font-bold text-primary">
+                £{product.price}
+              </h5>
+              <StockStatus inventory={product.inventory} />
 
-              <div className="mt-auto">
-                <h4 className="price">£{product.price}</h4>
-                <StockStatus inventory={product.inventory} />
-                <div className="d-flex gap-2">
-                  {isAdmin && (
-                    <>
-                      <Link to={"#"} onClick={() => handleDelete(product.id)}>
-                        delete
-                      </Link>
-                      <Link to={`/products/${product.id}/edit`}>edit</Link>
-                    </>
-                  )}
+              <div className="flex items-center gap-3 mt-4">
+                {isAdmin && (
+                  <>
+                    <Link
+                      to={"#"}
+                      onClick={() => handleDelete(product.id)}
+                      className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                    >
+                      Delete
+                    </Link>
+                    <Link
+                      to={`/products/${product.id}/edit`}
+                      className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
+                    >
+                      Edit
+                    </Link>
+                  </>
+                )}
 
-                  <button
-                    className="shop-now-button"
-                    onClick={() => handleAddToCart(product.id)}
-                  >
-                    Add to cart
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleAddToCart(product.id)}
+                  className="flex-1 inline-flex items-center justify-center px-4 py-2 border border-b rounded-full text-sm font-medium text-white bg-primary hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200"
+                >
+                  Add to cart
+                </button>
               </div>
-            </Card.Body>
-          </Card>
-        </div>
+            </div>
+          </div>
+        </article>
       ))}
     </main>
   );

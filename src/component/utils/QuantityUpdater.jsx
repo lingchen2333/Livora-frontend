@@ -3,25 +3,29 @@ import { BsDash, BsPlus } from "react-icons/bs";
 
 const QuantityUpdater = ({ quantity, onIncrease, onDecrease }) => {
   return (
-    <section style={{ width: "150px" }}>
-      <div className="input-group">
-        <button onClick={onDecrease} className="btn btn-outline-secondary">
-          <BsDash />
-        </button>
+    <div className="flex items-center">
+      <button
+        onClick={onDecrease}
+        className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100 transition-colors duration-200"
+      >
+        <BsDash />
+      </button>
 
-        <input
-          name="quantity"
-          type="number"
-          value={quantity}
-          readOnly
-          className="form-control text-center"
-        ></input>
+      <input
+        name="quantity"
+        type="number"
+        value={quantity}
+        readOnly
+        className="w-16 h-10 mx-2 text-center border border-gray-300 rounded-lg focus:outline-none focus:border-[#537D5D]"
+      />
 
-        <button onClick={onIncrease} className="btn btn-outline-secondary">
-          <BsPlus />
-        </button>
-      </div>
-    </section>
+      <button
+        onClick={onIncrease}
+        className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100 transition-colors duration-200"
+      >
+        <BsPlus />
+      </button>
+    </div>
   );
 };
 
