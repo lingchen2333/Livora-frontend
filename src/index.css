@@ -481,11 +481,6 @@ Hero.css .hero {
   display: flex;
 }
 
-.brand-list {
-  list-style-type: none;
-  padding: 0;
-}
-
 .brand-item {
   margin: 0.5rem 0;
 }
@@ -571,4 +566,52 @@ Hero.css .hero {
   --primary-color: #537d5d;
 
   /* Default color */
+}
+
+/* Toast Notifications Styling */
+.Toastify__toast-container {
+  font-size: 14px;
+}
+
+.Toastify__toast {
+  background-color: white;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.Toastify__toast--success {
+  border-left: 4px solid #537d5d;
+}
+
+.Toastify__toast--error {
+  border-left: 4px solid #dc3545;
+}
+
+.Toastify__toast--info {
+  border-left: 4px solid #17a2b8;
+}
+
+.Toastify__toast--warning {
+  border-left: 4px solid #ffc107;
+}
+
+.Toastify__progress-bar {
+  background: #537d5d !important;
+}
+
+.Toastify__close-button {
+  color: #666;
+  opacity: 0.7;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
+}
+
+.Toastify__toast-body {
+  font-family: inherit;
+  line-height: 1.5;
 }

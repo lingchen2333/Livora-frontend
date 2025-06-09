@@ -17,7 +17,6 @@ import {
   clearFilters,
 } from "../../store/features/searchSlice";
 
-import CategorySelector from "../search/CategorySearchBar";
 import CategorySearchBar from "../search/CategorySearchBar";
 
 const Home = () => {

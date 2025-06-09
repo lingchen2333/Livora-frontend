@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SearchBar from "../search/SearchBar";
+
 import Paginator from "../common/Paginator";
 import ProductCard from "./ProductCard";
 import { useSelector, useDispatch } from "react-redux";
@@ -80,16 +80,9 @@ const Products = () => {
   return (
     <>
       <ToastContainer />
-      <div className="d-flex justify-content-center">
-        <div className="col-md-6 mt-2">
-          <div className="search-bar input-group">
-            <SearchBar />
-          </div>
-        </div>
-      </div>
 
-      <div className="flex">
-        <aside className="w-64 p-4">
+      <div className="flex m-10">
+        <aside className="w-76 p-4 me-5">
           <SideBar />
         </aside>
         <section className="flex-1">

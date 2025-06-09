@@ -15,12 +15,21 @@ const HeroSlider = () => {
     speed: 12000,
     autoplay: true,
     autoplayspeed: 15000,
+    lazyLoad: "progressive",
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: 0,
   };
   return (
     <Slider {...settings} className="hero-slider">
       {images.map((img, index) => (
         <div key={index} className="slide">
-          <img src={img} alt={`slider ${index + 1} `} className="slide-image" />
+          <img
+            src={img}
+            alt={`slider ${index + 1} `}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       ))}
     </Slider>
