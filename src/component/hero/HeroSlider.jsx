@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import bg1 from "../../assets/images/hero-1.avif";
 import bg2 from "../../assets/images/hero-2.avif";
-import bg3 from "../../assets/images/hero-3.webp";
+import bg3 from "../../assets/images/hero-3.avif";
 import bg4 from "../../assets/images/hero-4.avif";
 
 const images = [bg1, bg2, bg3, bg4];

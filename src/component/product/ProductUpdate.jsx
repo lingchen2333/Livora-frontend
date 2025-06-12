@@ -9,7 +9,7 @@ import {
 } from "../../store/features/productSlice";
 import BrandSelector from "../common/BrandSelector";
 import CategorySelector from "../common/CategorySelector";
-import ImageUpdater from "../image/ImageUpdater";
+import UpdateImage from "../image/UpdateImage";
 import ProductImageThumbnail from "../utils/ProductImageThumbnail";
 import LoadSpinner from "../common/LoadSpinner";
 import { deleteImageById } from "../../store/features/imageSlice";
@@ -97,16 +97,18 @@ const ProductUpdate = () => {
   };
 
   const handleDeleteImage = async (imageId) => {
+    const previousUpdateProduct = { ...updatedProduct };
+    setUpdatedProduct({
+      ...updatedProduct,
+      images: updatedProduct.images.filter((image) => image.id !== imageId),
+    });
+
     try {
       const result = await dispatch(deleteImageById({ imageId })).unwrap();
       toast.success(result.message);
-
-      setUpdatedProduct({
-        ...updatedProduct,
-        images: updatedProduct.images.filter((image) => image.id !== imageId),
-      });
     } catch (error) {
       toast.error(error.message);
+      setUpdatedProduct(previousUpdateProduct);
     }
   };
 
@@ -280,6 +282,7 @@ const ProductUpdate = () => {
                           <FaEdit className="mr-1.5" />
                           Edit
                         </button>
+
                         <button
                           onClick={() => handleDeleteImage(image.id)}
                           className="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
@@ -305,7 +308,7 @@ const ProductUpdate = () => {
         </div>
       </div>
 
-      <ImageUpdater
+      <UpdateImage
         show={showImageModal}
         handleClose={handleCloseImageModal}
         selectedImageId={selectedImageId}

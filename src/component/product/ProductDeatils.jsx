@@ -9,10 +9,11 @@ import { addToCart } from "../../store/features/cartSlice";
 import { toast, ToastContainer } from "react-toastify";
 import StockStatus from "../utils/StockStatus";
 import ProductImageThumbnail from "../utils/ProductImageThumbnail";
+import LoadSpinner from "../common/LoadSpinner";
 
 const ProductDeatils = () => {
   const { productId } = useParams();
-  const product = useSelector((state) => state.product.product);
+  const { product, isLoading } = useSelector((state) => state.product);
   const { errorMessage } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
@@ -56,6 +57,10 @@ const ProductDeatils = () => {
       setQuantity(quantity - 1);
     }
   };
+
+  if (isLoading) {
+    return <LoadSpinner />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

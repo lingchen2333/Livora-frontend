@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Hero from "../hero/Hero";
-
 import { Link } from "react-router-dom";
 import ProductImage from "../utils/ProductImage";
 import { getFirstProductPerDistinctName } from "../../store/features/productSlice";
-import { toast, ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import StockStatus from "../utils/StockStatus";
-import {
-  setTotalItems,
-  setCurrentPage,
-} from "../../store/features/paginationSlice";
 import LoadSpinner from "../common/LoadSpinner";
 import {
   setInitialSearchQuery,
@@ -21,56 +14,34 @@ import CategorySearchBar from "../search/CategorySearchBar";
 
 const Home = () => {
   const dispatch = useDispatch();
+  const selectedCategory = useSelector(
+    (state) => state.search.selectedCategory
+  );
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const products = useSelector(
     (state) => state.product.productsWithDistinctName
   );
-  const { searchQuery, selectedCategory } = useSelector(
-    (state) => state.search
-  );
-  const { itemsPerPage, currentPage } = useSelector(
-    (state) => state.pagination
-  );
+
   const isLoading = useSelector((state) => state.product.isLoading);
 
   useEffect(() => {
     dispatch(getFirstProductPerDistinctName());
   }, [dispatch]);
 
-  //filter products based on search query and selected category
+  //filter products based on selected category
   useEffect(() => {
     const results = products.filter((product) => {
-      const matchesQuery = product.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-
       const matchesCategory =
         selectedCategory === "all" ||
         product.category.name
           .toLowerCase()
           .includes(selectedCategory.toLowerCase());
 
-      return matchesQuery && matchesCategory;
+      return matchesCategory;
     });
     setFilteredProducts(results);
-  }, [searchQuery, selectedCategory, products]);
-
-  //pagination
-  useEffect(() => {
-    dispatch(setCurrentPage(1));
-  }, [filteredProducts, dispatch]);
-
-  useEffect(() => {
-    dispatch(setTotalItems(filteredProducts.length));
-  }, [filteredProducts, dispatch]);
-
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  }, [selectedCategory, products]);
 
   //spinner when is loading
   if (isLoading) {
@@ -84,14 +55,14 @@ const Home = () => {
   return (
     <div className="mb-50">
       <Hero />
-      <ToastContainer />
+
       <div className="mt-5">
         <CategorySearchBar />
 
         <div className="container mx-auto mt-10 px-5 xl:px-28 ">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-            {currentProducts &&
-              currentProducts.map((product) => (
+            {filteredProducts &&
+              filteredProducts.map((product) => (
                 <article key={product.id} className="group relative w-full">
                   <Link
                     to={`/products/search?name=${product.name}`}

@@ -1,9 +1,7 @@
 import axios from "axios";
 import { logout } from "./authService";
 
-const baseURL = "http://localhost:9090/api/v1";
-// const baseURL =
-//   "http://livora-env.eba-ugp8evid.eu-west-2.elasticbeanstalk.com/api/v1";
+const baseURL = import.meta.env.VITE_API_URL;
 
 export const authApi = axios.create({
   baseURL: baseURL,
