@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteProductById } from "../../store/features/productSlice";
 import { toast } from "react-toastify";
 import { addToCart } from "../../store/features/cartSlice";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 const ProductCard = ({ products }) => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const ProductCard = ({ products }) => {
   };
 
   return (
-    <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
+    <main className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 p-4">
       {products.map((product) => (
         <article
           key={product.id}
@@ -71,22 +72,24 @@ const ProductCard = ({ products }) => {
               <h5 className="text-xl font-bold text-primary">
                 £{product.price}
               </h5>
-              <StockStatus inventory={product.inventory} />
 
               <div className="flex items-center gap-3 mt-4">
                 {isAdmin && (
                   <>
+                    <StockStatus inventory={product.inventory} />
                     <Link
                       to={"#"}
                       onClick={() => handleDelete(product.id)}
-                      className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-full hover:bg-red-100 transition-all duration-200"
                     >
+                      <FaTrash className="w-3.5 h-3.5" />
                       Delete
                     </Link>
                     <Link
                       to={`/products/${product.id}/edit`}
-                      className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100 transition-all duration-200"
                     >
+                      <FaEdit className="w-3.5 h-3.5" />
                       Edit
                     </Link>
                   </>

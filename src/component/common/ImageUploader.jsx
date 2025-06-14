@@ -6,7 +6,11 @@ import { FaTrash, FaCloudUploadAlt, FaImage } from "react-icons/fa";
 import { toast } from "react-toastify";
 import LoadSpinner from "./LoadSpinner";
 
-const ImageUploader = ({ productId, selectedImageId, handleClose }) => {
+const ImageUploader = ({
+  productId,
+  selectedImageId,
+  handleClose = () => {},
+}) => {
   const dispatch = useDispatch();
   const [images, setImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -41,14 +45,15 @@ const ImageUploader = ({ productId, selectedImageId, handleClose }) => {
     if (images.length > 0) {
       setLoading(true);
       try {
+        var result;
         if (selectedImageId) {
           //update image
-          const result = await dispatch(
+          result = await dispatch(
             updateImageById({ imageId: selectedImageId, file: images[0].file })
           ).unwrap();
         } else {
           //upload new image
-          const result = await dispatch(
+          result = await dispatch(
             uploadImages({
               productId,
               files: images.map((image) => image.file),
@@ -58,6 +63,7 @@ const ImageUploader = ({ productId, selectedImageId, handleClose }) => {
         setImages([]);
         setLoading(false);
         handleClose();
+        console.log("result", result);
         toast.success(result.message);
       } catch (error) {
         toast.error(error.message);
@@ -147,7 +153,7 @@ const ImageUploader = ({ productId, selectedImageId, handleClose }) => {
                 {selectedImageId ? (
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
                     onChange={(e) => handleAddImages(e.target.files)}
                     className="hidden"
                     // ref={fileInputRef}
@@ -155,7 +161,7 @@ const ImageUploader = ({ productId, selectedImageId, handleClose }) => {
                 ) : (
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/png,image/jpeg,image/jpg,image/webp"
                     multiple
                     onChange={(e) => handleAddImages(e.target.files)}
                     className="hidden"
