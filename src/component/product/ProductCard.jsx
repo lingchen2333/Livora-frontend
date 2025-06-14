@@ -72,11 +72,11 @@ const ProductCard = ({ products }) => {
               <h5 className="text-xl font-bold text-primary">
                 £{product.price}
               </h5>
+              {isAdmin && <StockStatus inventory={product.inventory} />}
 
               <div className="flex items-center gap-3 mt-4">
                 {isAdmin && (
                   <>
-                    <StockStatus inventory={product.inventory} />
                     <Link
                       to={"#"}
                       onClick={() => handleDelete(product.id)}

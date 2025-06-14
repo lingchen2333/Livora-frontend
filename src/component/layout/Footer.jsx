@@ -20,8 +20,8 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-4">About Us</h3>
             <p className="text-black">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. We are
-              dedicated to providing the best furniture shopping experience.
+              Livora brings timeless, stylish furniture to modern homes —
+              crafted for comfort, built to last.
             </p>
           </div>
 
