@@ -11,6 +11,7 @@ import {
   clearFilters,
 } from "../../store/features/searchSlice";
 import { useNavigate, useLocation } from "react-router-dom";
+import ImageSearch from "./ImageSearch";
 
 const SideBar = () => {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="space-y-7 p-4">
+    <div className="space-y-10 p-4">
       {/* Search Query */}
       <div>
         <h2 className="text-2xl text-gray-900 mb-3 uppercase">filter by</h2>
@@ -79,6 +80,9 @@ const SideBar = () => {
           placeholder="Search products..."
         />
       </div>
+
+      {/* Image Search */}
+      {/* <ImageSearch /> */}
 
       {/* Category Selection */}
       <div>
