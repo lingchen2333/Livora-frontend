@@ -82,7 +82,7 @@ const SideBar = () => {
       </div>
 
       {/* Image Search */}
-      <ImageSearch />
+      {/* <ImageSearch /> */}
 
       {/* Category Selection */}
       <div>

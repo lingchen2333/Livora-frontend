@@ -86,7 +86,10 @@ const Products = () => {
   //spinner when is loading
   if (isLoading) {
     return (
-      <div>
+      <div className="container text-center py-8">
+        <p className="text-gray-600 text-sm mb-4 max-w-md mx-auto">
+          Loading products... The backend may take a moment to start up.
+        </p>
         <LoadSpinner />
       </div>
     );
